@@ -150,15 +150,15 @@ color: rgb(239,239,239);</string>
                     <item>
                      <widget class="QLabel" name="roughnessLbl">
                       <property name="text">
-                       <string>Rougness:</string>
+                       <string>Roughness:</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="rougnessTxt"/>
+                     <widget class="QLineEdit" name="roughnessTxt"/>
                     </item>
                     <item>
-                     <widget class="QPushButton" name="rougnessBtn">
+                     <widget class="QPushButton" name="roughnessBtn">
                       <property name="styleSheet">
                        <string notr="true">background-color: rgb(93, 93, 93);</string>
                       </property>

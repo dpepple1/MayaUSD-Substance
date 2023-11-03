@@ -124,16 +124,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.roughnessLbl)
 
-        self.rougnessTxt = QLineEdit(self.widget)
-        self.rougnessTxt.setObjectName(u"rougnessTxt")
+        self.roughnessTxt = QLineEdit(self.widget)
+        self.roughnessTxt.setObjectName(u"roughnessTxt")
 
-        self.horizontalLayout_8.addWidget(self.rougnessTxt)
+        self.horizontalLayout_8.addWidget(self.roughnessTxt)
 
-        self.rougnessBtn = QPushButton(self.widget)
-        self.rougnessBtn.setObjectName(u"rougnessBtn")
-        self.rougnessBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
+        self.roughnessBtn = QPushButton(self.widget)
+        self.roughnessBtn.setObjectName(u"roughnessBtn")
+        self.roughnessBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
 
-        self.horizontalLayout_8.addWidget(self.rougnessBtn)
+        self.horizontalLayout_8.addWidget(self.roughnessBtn)
 
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_8)
@@ -288,8 +288,8 @@ class Ui_MainWindow(object):
         self.matNameLbl.setText(QCoreApplication.translate("MainWindow", u"Material Name:", None))
         self.baseColorLbl.setText(QCoreApplication.translate("MainWindow", u"Base Color:", None))
         self.baseColorBtn.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))
-        self.roughnessLbl.setText(QCoreApplication.translate("MainWindow", u"Rougness:", None))
-        self.rougnessBtn.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))
+        self.roughnessLbl.setText(QCoreApplication.translate("MainWindow", u"Roughness:", None))
+        self.roughnessBtn.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))
         self.metallicLbl.setText(QCoreApplication.translate("MainWindow", u"Metallic:", None))
         self.metallicBtn.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))
         self.normalLbl.setText(QCoreApplication.translate("MainWindow", u"Normal:", None))
