@@ -1,0 +1,44 @@
+/*
+install.mel
+By: Derek Pepple
+2024
+
+Installer program for the Maya Video Player Plugin. To operate, change the
+$VERSION variable to be the version of Maya installed to, and the 
+$INSTALL_LOCATION variable to be the location where the repository was 
+downloaded to. 
+*/
+
+
+// CHANGE THESE LINES AS NEEDED
+string $VERSION = "2024";
+string $INSTALL_LOCATION = "C:\\<CHANGE_THIS>\\Maya-Video-Player\\";
+
+// Get path to Mayapy installation
+string $exec_path = "\"C:\\Program Files\\Autodesk\\Maya" + $VERSION + "\\bin\\mayapy.exe\"";
+
+// Add OpenCV to Mayapy
+string $command = $exec_path + " -m pip install opencv-python";
+system $command;
+
+
+// Create Video_Command.mod and add to modules folder
+
+// Get Location of the user's Documents/Maya Folder
+$maya_location = `internalVar -uad`;
+// Set Location to add the .mod file
+$mod_folder_location = $maya_location + $VERSION + "/modules/";
+$mod_location = $mod_folder_location + "video_command.mod";
+// Get text to write to .mod file
+string $mod_contents = "+ PLATFORM:win64 video_player 1.0.0 " + $INSTALL_LOCATION;
+// Create mod folder if needed
+int $exists = `filetest -d $mod_folder_location`;
+if (!$exists){
+    sysFile -makeDir $mod_folder_location;
+}
+
+// Write .mod file
+$fileId = `fopen $mod_location "w"`;
+fprint $fileId $mod_contents;
+fclose $fileId;
+print "Install Completed!"; 

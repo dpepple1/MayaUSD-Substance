@@ -1,6 +1,6 @@
 import maya.api.OpenMaya as om
 import maya.cmds as cmds
-#import ui.main as player
+import USDSubstanceImport
 
 # Not sure if this is necessary
 def maya_useNewAPI():
@@ -36,9 +36,8 @@ class USDSubstanceCmd(om.MPxCommand):
     
 
     def doIt(self, args):
-    
-        pass    
-        #player.runInMaya(path, firstImagePath, projectRootDirectory)
+        print("command executed")
+        USDSubstanceImport.runInMaya()
         
     @staticmethod
     def creator():

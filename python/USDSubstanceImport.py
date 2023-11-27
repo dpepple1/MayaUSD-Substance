@@ -44,7 +44,28 @@ class MainWindow(QtWidgets.QMainWindow):
         Connects functions to event handlers
         '''
         self.ui.browseAllBtn.clicked.connect(self.browseAllFiles)
+        self.ui.baseColorBtn.clicked.connect(lambda: self.browseSingle(self.ui.baseColorTxt))
+        self.ui.roughnessBtn.clicked.connect(lambda: self.browseSingle(self.ui.roughnessTxt))
+        self.ui.metallicBtn.clicked.connect(lambda: self.browseSingle(self.ui.metallicTxt))
+        self.ui.normalBtn.clicked.connect(lambda: self.browseSingle(self.ui.normalTxt))
+        self.ui.heightBtn.clicked.connect(lambda: self.browseSingle(self.ui.heightTxt))
         
+    def browseSingle(self, button):
+        '''
+        Allows user to select a single file that will be populated into the 
+        associated file category.
+        '''
+        dialog = QFileDialog(self)
+        dialog.setNameFilter(self.tr("Images (*.png *.xpm *.jpg *.jpeg *.tx *.pix *.exr *.raw);;All Files (*.*)"))
+        dialog.setViewMode(QFileDialog.Detail)
+        if dialog.exec_():
+            fileNames = dialog.selectedFiles()
+
+        try:
+            file = fileNames[0]
+            button.setText(file)
+        except:
+            return #If no file selected
 
     def browseAllFiles(self):
         '''
@@ -61,6 +82,8 @@ class MainWindow(QtWidgets.QMainWindow):
         dialog.setViewMode(QFileDialog.Detail)
         if dialog.exec_():
             fileNames = dialog.selectedFiles()
+
+        alert = True
         
         if len(fileNames) == 1: #Grab Other files automatically
             #First grab the name of the file that is independent of the property type
@@ -77,15 +100,17 @@ class MainWindow(QtWidgets.QMainWindow):
                     regex = os.path.join(dirname, genericName + "*" + ext)
                     found_textures = glob.glob(regex)
                     if len(found_textures) > 1:
+                        self.alert('Other Files Found', f'{len(found_textures) - 1} matching texture files were found.')
                         fileNames = found_textures
+                        alert = False
                     break
                 except:
                     pass
 
-        self.populateTexts(fileNames)
+        self.populateTexts(fileNames, alert)
         
 
-    def populateTexts(self, fileNames):
+    def populateTexts(self, fileNames, alert = True):
         '''
         Places files in proper textboxes
         '''
