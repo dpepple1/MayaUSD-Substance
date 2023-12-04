@@ -6,10 +6,7 @@ if (`gmatch $usdsubInstallScriptLocation "*\*"`)
 	$usdsubInstallScriptLocation=`substituteAllString $usdsubInstallScriptLocation "\\" "/"`;
 string $scriptName="USDSubstanceImport";
 string $sourceFile=$usdsubInstallScriptLocation+"python/"+$scriptName+".py";
-//string $command="source \""+$sourceFile+"\";";
-//string $command = "exec(open(\"" + $sourceFile + "\").read())";
-string $command = "exec(open(\""+$sourceFile+"\").read(), globals(), {'__file__': \""+$usdsubInstallScriptLocation+"python/\"})";
-print $command;
+string $command = "import sys; sys.path.append(\"" + $usdsubInstallScriptLocation + "python/\"); import " + $scriptName + "; " + $scriptName + ".runInMaya()";
 string $icon=$usdsubInstallScriptLocation+"icons/usdlogo.png";
 if (!`file -q -ex $sourceFile`)
 	error ("Something went wrong, can not find: \""+$sourceFile+"\""); 

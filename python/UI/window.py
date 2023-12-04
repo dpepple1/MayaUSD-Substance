@@ -300,13 +300,13 @@ class Ui_MainWindow(object):
         self.objPromptLbl.setText(QCoreApplication.translate("MainWindow", u"Objects To \n"
 "Receive Material", None))
 
-        __sortingEnabled = self.objList.isSortingEnabled()
-        self.objList.setSortingEnabled(False)
-        ___qlistwidgetitem = self.objList.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"polyCube1", None));
-        ___qlistwidgetitem1 = self.objList.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"polySphere1", None));
-        self.objList.setSortingEnabled(__sortingEnabled)
+        #__sortingEnabled = self.objList.isSortingEnabled()
+        #self.objList.setSortingEnabled(False)
+        # ___qlistwidgetitem = self.objList.item(0)
+        # ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"polyCube1", None));
+        # ___qlistwidgetitem1 = self.objList.item(1)
+        # ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"polySphere1", None));
+        #self.objList.setSortingEnabled(__sortingEnabled)
 
         self.addObjBtn.setText(QCoreApplication.translate("MainWindow", u"Add Selected Object", None))
         self.addMatBtn.setText(QCoreApplication.translate("MainWindow", u"Add Material", None))

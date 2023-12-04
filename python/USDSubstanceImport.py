@@ -5,6 +5,7 @@ from PySide2.QtCore import QObject, QSize, QCoreApplication, QRunnable, QThreadP
 from PySide2.QtWidgets import QFileDialog, QMessageBox
 
 # Other Imports
+import maya.cmds as cmds
 import sys
 import importlib
 import os
@@ -35,9 +36,6 @@ except:
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
-        super().__init__()
-        print(self)
-        #print(locals())
         super(MainWindow, self).__init__(parent)
         self.ui = QTWindow.Ui_MainWindow()
         self.ui.setupUi(self)
@@ -54,6 +52,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.normalBtn.clicked.connect(lambda: self.browseSingle(self.ui.normalTxt))
         self.ui.heightBtn.clicked.connect(lambda: self.browseSingle(self.ui.heightTxt))
         
+
+
     def browseSingle(self, button):
         '''
         Allows user to select a single file that will be populated into the 
@@ -147,6 +147,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if button == QMessageBox.Ok:
             return True
+        
+    def addSelectedObjects():
+
 
 def test():
     print(omui)
@@ -160,13 +163,3 @@ def getMayaWindow():
 def runInMaya():
     mainWindow = MainWindow(getMayaWindow())
     mainWindow.show()
-
-
-# def runStandAlone():
-#     app = QtWidgets.QApplication(sys.argv)
-#     mainWindow = MainWindow()
-#     mainWindow.show()
-#     sys.exit(app.exec_())
-
-#pprint(locals())
-runInMaya()
