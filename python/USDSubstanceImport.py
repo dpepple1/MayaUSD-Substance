@@ -18,6 +18,8 @@ NORMAL_NAMES = ['normal']
 HEIGHT_NAMES = ['height']
 ALL_NAMES = DIFFUSE_NAMES + METALLIC_NAMES + ROUGHNESS_NAMES + NORMAL_NAMES + HEIGHT_NAMES
 
+print(__file__)
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(1, dir_path)
 
@@ -29,12 +31,14 @@ try:
     import shiboken2
 
 except:
-    pass
+    print('Failed Imports')
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
+        super().__init__()
+        print(self)
+        #print(locals())
         super(MainWindow, self).__init__(parent)
-        
         self.ui = QTWindow.Ui_MainWindow()
         self.ui.setupUi(self)
         self.connectEventHandlers()
@@ -144,6 +148,9 @@ class MainWindow(QtWidgets.QMainWindow):
         if button == QMessageBox.Ok:
             return True
 
+def test():
+    print(omui)
+
 
 def getMayaWindow():
     pointer = omui.MQtUtil.mainWindow()
@@ -154,11 +161,12 @@ def runInMaya():
     mainWindow = MainWindow(getMayaWindow())
     mainWindow.show()
 
-def runStandAlone():
-    app = QtWidgets.QApplication(sys.argv)
-    mainWindow = MainWindow()
-    mainWindow.show()
-    sys.exit(app.exec_())
 
-if __name__ == "__main__":
-    runStandAlone()
+# def runStandAlone():
+#     app = QtWidgets.QApplication(sys.argv)
+#     mainWindow = MainWindow()
+#     mainWindow.show()
+#     sys.exit(app.exec_())
+
+#pprint(locals())
+runInMaya()
