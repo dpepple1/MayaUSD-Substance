@@ -2,7 +2,7 @@
 from PySide2 import QtCore, QtGui, QtWidgets, QtMultimedia
 from PySide2.QtGui import QIcon
 from PySide2.QtCore import QObject, QSize, QCoreApplication, QRunnable, QThreadPool, Signal
-from PySide2.QtWidgets import QFileDialog, QMessageBox
+from PySide2.QtWidgets import QFileDialog, QMessageBox, QListWidgetItem
 
 # Other Imports
 import maya.cmds as cmds
@@ -40,6 +40,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = QTWindow.Ui_MainWindow()
         self.ui.setupUi(self)
         self.connectEventHandlers()
+        self.addedItems = []
     
     def connectEventHandlers(self):
         '''
@@ -51,7 +52,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.metallicBtn.clicked.connect(lambda: self.browseSingle(self.ui.metallicTxt))
         self.ui.normalBtn.clicked.connect(lambda: self.browseSingle(self.ui.normalTxt))
         self.ui.heightBtn.clicked.connect(lambda: self.browseSingle(self.ui.heightTxt))
-        
+        self.ui.addObjBtn.clicked.connect(lambda: self.addSelectedObjects(self.ui.objList))
 
 
     def browseSingle(self, button):
@@ -148,12 +149,19 @@ class MainWindow(QtWidgets.QMainWindow):
         if button == QMessageBox.Ok:
             return True
         
-    def addSelectedObjects():
-
-
-def test():
-    print(omui)
-
+    def addSelectedObjects(self, listWidget):
+        '''
+        For reference : https://stackoverflow.com/questions/76558940/select-and-hide-multiple-usd-prims-in-maya
+        '''
+        selected = cmds.ls(sl=True, ufe = True)
+        for item in selected:
+            try:
+                item_name = item.split(',')[1]
+                if item_name not in self.addedItems:
+                    listWidget.addItem(item_name)
+                    self.addedItems.append(item_name)
+            except:
+                print("Error processing item:", item)
 
 def getMayaWindow():
     pointer = omui.MQtUtil.mainWindow()

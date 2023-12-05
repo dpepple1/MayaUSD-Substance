@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 680, 459))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 659, 460))
         self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.optionsGroup = QGroupBox(self.scrollAreaWidgetContents)
@@ -219,8 +219,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.objPromptLbl)
 
         self.objList = QListWidget(self.widget)
-        QListWidgetItem(self.objList)
-        QListWidgetItem(self.objList)
         self.objList.setObjectName(u"objList")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -252,11 +250,28 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.mat1Group)
 
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.submitNewBtn = QPushButton(self.scrollAreaWidgetContents)
+        self.submitNewBtn.setObjectName(u"submitNewBtn")
+        self.submitNewBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
+
+        self.horizontalLayout.addWidget(self.submitNewBtn)
+
+        self.submitExistBtn = QPushButton(self.scrollAreaWidgetContents)
+        self.submitExistBtn.setObjectName(u"submitExistBtn")
+        self.submitExistBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
+
+        self.horizontalLayout.addWidget(self.submitExistBtn)
+
         self.addMatBtn = QPushButton(self.scrollAreaWidgetContents)
         self.addMatBtn.setObjectName(u"addMatBtn")
         self.addMatBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
 
-        self.verticalLayout_2.addWidget(self.addMatBtn)
+        self.horizontalLayout.addWidget(self.addMatBtn)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
@@ -299,16 +314,9 @@ class Ui_MainWindow(object):
         self.browseAllBtn.setText(QCoreApplication.translate("MainWindow", u"Browse All", None))
         self.objPromptLbl.setText(QCoreApplication.translate("MainWindow", u"Objects To \n"
 "Receive Material", None))
-
-        #__sortingEnabled = self.objList.isSortingEnabled()
-        #self.objList.setSortingEnabled(False)
-        # ___qlistwidgetitem = self.objList.item(0)
-        # ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"polyCube1", None));
-        # ___qlistwidgetitem1 = self.objList.item(1)
-        # ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"polySphere1", None));
-        #self.objList.setSortingEnabled(__sortingEnabled)
-
         self.addObjBtn.setText(QCoreApplication.translate("MainWindow", u"Add Selected Object", None))
+        self.submitNewBtn.setText(QCoreApplication.translate("MainWindow", u"Save to New Layer", None))
+        self.submitExistBtn.setText(QCoreApplication.translate("MainWindow", u"Save to Active Layer", None))
         self.addMatBtn.setText(QCoreApplication.translate("MainWindow", u"Add Material", None))
     # retranslateUi
 
