@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>718</width>
-    <height>534</height>
+    <height>561</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@ color: rgb(239,239,239);</string>
          <x>0</x>
          <y>0</y>
          <width>673</width>
-         <height>460</height>
+         <height>489</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -56,7 +56,10 @@ color: rgb(239,239,239);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="comboBox">
+                 <widget class="QComboBox" name="matTypeCombo">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(43, 43, 43);</string>
+                  </property>
                   <item>
                    <property name="text">
                     <string>USDPreviewSurface</string>
@@ -70,6 +73,29 @@ color: rgb(239,239,239);</string>
                   <item>
                    <property name="text">
                     <string>Arnold Standard Surface</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <widget class="QLabel" name="stageLbl">
+                  <property name="text">
+                   <string>Select Stage to Add Materials To: </string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="stageCombo">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(43, 43, 43);</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Select Stage...</string>
                    </property>
                   </item>
                  </widget>
@@ -117,7 +143,11 @@ color: rgb(239,239,239);</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="matNameTxt"/>
+                     <widget class="QLineEdit" name="matNameTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </item>
@@ -131,7 +161,11 @@ color: rgb(239,239,239);</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="baseColorTxt"/>
+                     <widget class="QLineEdit" name="baseColorTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="baseColorBtn">
@@ -155,7 +189,11 @@ color: rgb(239,239,239);</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="roughnessTxt"/>
+                     <widget class="QLineEdit" name="roughnessTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="roughnessBtn">
@@ -179,7 +217,11 @@ color: rgb(239,239,239);</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="metallicTxt"/>
+                     <widget class="QLineEdit" name="metallicTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="metallicBtn">
@@ -203,7 +245,11 @@ color: rgb(239,239,239);</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="normalTxt"/>
+                     <widget class="QLineEdit" name="normalTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="normalBtn">
@@ -227,7 +273,11 @@ color: rgb(239,239,239);</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="heightTxt"/>
+                     <widget class="QLineEdit" name="heightTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
                     </item>
                     <item>
                      <widget class="QPushButton" name="heightBtn">
@@ -269,7 +319,7 @@ Receive Material</string>
                   <item>
                    <widget class="QListWidget" name="objList">
                     <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
@@ -296,6 +346,16 @@ Receive Material</string>
                     </property>
                     <property name="text">
                      <string>Add Selected Object</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="clearObjBtn">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(93, 93, 93);</string>
+                    </property>
+                    <property name="text">
+                     <string>Clear Objects</string>
                     </property>
                    </widget>
                   </item>

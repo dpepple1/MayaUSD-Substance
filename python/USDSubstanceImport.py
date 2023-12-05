@@ -40,6 +40,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = QTWindow.Ui_MainWindow()
         self.ui.setupUi(self)
         self.connectEventHandlers()
+        self.stage_detected = self.loadStages()
         self.addedItems = []
     
     def connectEventHandlers(self):
@@ -53,7 +54,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.normalBtn.clicked.connect(lambda: self.browseSingle(self.ui.normalTxt))
         self.ui.heightBtn.clicked.connect(lambda: self.browseSingle(self.ui.heightTxt))
         self.ui.addObjBtn.clicked.connect(lambda: self.addSelectedObjects(self.ui.objList))
+        self.ui.clearObjBtn.clicked.connect(lambda: self.clearObjects(self.ui.objList))
+        self.ui.submitNewBtn.clicked.connect(lambda: self.saveToNewLayer())
 
+    def loadStages(self):
+        stages = cmds.ls(type='mayaUsdProxyShape')
+        if len(stages) == 0:
+            self.alert('No Stage Found', 'No USD Stages were found in this scene.')
+            return False
+        else:
+            for stage in stages:
+                self.ui.stageCombo.addItem(stage)
+            return True
 
     def browseSingle(self, button):
         '''
@@ -163,6 +175,26 @@ class MainWindow(QtWidgets.QMainWindow):
             except:
                 print("Error processing item:", item)
 
+    def clearObjects(self, listWidget):
+        listWidget.clear()
+        self.addedItems = []
+
+    def getSelectedStage(self):
+        try:
+            stage_name = str(self.ui.stageCombo.currentText())
+            stage_file = cmds.getAttr(stage_name + '.filePath')
+
+        except:
+            #Likely means selected object wasn't a stage somehow
+            print("Error Getting Stage Object")
+            
+
+    def saveToNewLayer(self):
+        self.getSelectedStage()
+
+
+# ------------------------------------ #
+
 def getMayaWindow():
     pointer = omui.MQtUtil.mainWindow()
     if pointer is not None:
@@ -170,4 +202,5 @@ def getMayaWindow():
     
 def runInMaya():
     mainWindow = MainWindow(getMayaWindow())
-    mainWindow.show()
+    if mainWindow.stage_detected:
+        mainWindow.show()

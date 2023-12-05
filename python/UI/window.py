@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(704, 534)
+        MainWindow.resize(718, 561)
         MainWindow.setStyleSheet(u"background-color: rgb(55, 55, 55);\n"
 "color: rgb(239,239,239);")
         self.centralwidget = QWidget(MainWindow)
@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 659, 460))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 673, 489))
         self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.optionsGroup = QGroupBox(self.scrollAreaWidgetContents)
@@ -48,16 +48,34 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.matTypePrompt)
 
-        self.comboBox = QComboBox(self.widget_2)
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.setObjectName(u"comboBox")
+        self.matTypeCombo = QComboBox(self.widget_2)
+        self.matTypeCombo.addItem("")
+        self.matTypeCombo.addItem("")
+        self.matTypeCombo.addItem("")
+        self.matTypeCombo.setObjectName(u"matTypeCombo")
+        self.matTypeCombo.setStyleSheet(u"background-color: rgb(43, 43, 43);")
 
-        self.horizontalLayout_2.addWidget(self.comboBox)
+        self.horizontalLayout_2.addWidget(self.matTypeCombo)
 
 
         self.verticalLayout_7.addLayout(self.horizontalLayout_2)
+
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.stageLbl = QLabel(self.widget_2)
+        self.stageLbl.setObjectName(u"stageLbl")
+
+        self.horizontalLayout_5.addWidget(self.stageLbl)
+
+        self.stageCombo = QComboBox(self.widget_2)
+        self.stageCombo.addItem("")
+        self.stageCombo.setObjectName(u"stageCombo")
+        self.stageCombo.setStyleSheet(u"background-color: rgb(43, 43, 43);")
+
+        self.horizontalLayout_5.addWidget(self.stageCombo)
+
+
+        self.verticalLayout_7.addLayout(self.horizontalLayout_5)
 
 
         self.verticalLayout_5.addWidget(self.widget_2)
@@ -90,6 +108,7 @@ class Ui_MainWindow(object):
 
         self.matNameTxt = QLineEdit(self.widget)
         self.matNameTxt.setObjectName(u"matNameTxt")
+        self.matNameTxt.setStyleSheet(u"background-color: rgb(43, 43, 43);")
 
         self.horizontalLayout_7.addWidget(self.matNameTxt)
 
@@ -105,6 +124,7 @@ class Ui_MainWindow(object):
 
         self.baseColorTxt = QLineEdit(self.widget)
         self.baseColorTxt.setObjectName(u"baseColorTxt")
+        self.baseColorTxt.setStyleSheet(u"background-color: rgb(43, 43, 43);")
 
         self.horizontalLayout_6.addWidget(self.baseColorTxt)
 
@@ -126,6 +146,7 @@ class Ui_MainWindow(object):
 
         self.roughnessTxt = QLineEdit(self.widget)
         self.roughnessTxt.setObjectName(u"roughnessTxt")
+        self.roughnessTxt.setStyleSheet(u"background-color: rgb(43, 43, 43);")
 
         self.horizontalLayout_8.addWidget(self.roughnessTxt)
 
@@ -147,6 +168,7 @@ class Ui_MainWindow(object):
 
         self.metallicTxt = QLineEdit(self.widget)
         self.metallicTxt.setObjectName(u"metallicTxt")
+        self.metallicTxt.setStyleSheet(u"background-color: rgb(43, 43, 43);")
 
         self.horizontalLayout_9.addWidget(self.metallicTxt)
 
@@ -168,6 +190,7 @@ class Ui_MainWindow(object):
 
         self.normalTxt = QLineEdit(self.widget)
         self.normalTxt.setObjectName(u"normalTxt")
+        self.normalTxt.setStyleSheet(u"background-color: rgb(43, 43, 43);")
 
         self.horizontalLayout_10.addWidget(self.normalTxt)
 
@@ -189,6 +212,7 @@ class Ui_MainWindow(object):
 
         self.heightTxt = QLineEdit(self.widget)
         self.heightTxt.setObjectName(u"heightTxt")
+        self.heightTxt.setStyleSheet(u"background-color: rgb(43, 43, 43);")
 
         self.horizontalLayout_11.addWidget(self.heightTxt)
 
@@ -220,12 +244,12 @@ class Ui_MainWindow(object):
 
         self.objList = QListWidget(self.widget)
         self.objList.setObjectName(u"objList")
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.objList.sizePolicy().hasHeightForWidth())
         self.objList.setSizePolicy(sizePolicy)
-        self.objList.setMaximumSize(QSize(150, 16777215))
+        self.objList.setMaximumSize(QSize(200, 16777215))
         self.objList.setStyleSheet(u"background-color: rgb(43, 43, 43);\n"
 "")
         self.objList.setFrameShape(QFrame.Box)
@@ -237,6 +261,12 @@ class Ui_MainWindow(object):
         self.addObjBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
 
         self.verticalLayout_6.addWidget(self.addObjBtn)
+
+        self.clearObjBtn = QPushButton(self.widget)
+        self.clearObjBtn.setObjectName(u"clearObjBtn")
+        self.clearObjBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
+
+        self.verticalLayout_6.addWidget(self.clearObjBtn)
 
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_6)
@@ -280,7 +310,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 704, 26))
+        self.menubar.setGeometry(QRect(0, 0, 718, 26))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -295,9 +325,12 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Maya USD Substance Import", None))
         self.optionsGroup.setTitle(QCoreApplication.translate("MainWindow", u"General Options", None))
         self.matTypePrompt.setText(QCoreApplication.translate("MainWindow", u"Select USD Compatible Material Type:", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"USDPreviewSurface", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"MaterialX", None))
-        self.comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Arnold Standard Surface", None))
+        self.matTypeCombo.setItemText(0, QCoreApplication.translate("MainWindow", u"USDPreviewSurface", None))
+        self.matTypeCombo.setItemText(1, QCoreApplication.translate("MainWindow", u"MaterialX", None))
+        self.matTypeCombo.setItemText(2, QCoreApplication.translate("MainWindow", u"Arnold Standard Surface", None))
+
+        self.stageLbl.setText(QCoreApplication.translate("MainWindow", u"Select Stage to Add Materials To: ", None))
+        self.stageCombo.setItemText(0, QCoreApplication.translate("MainWindow", u"Select Stage...", None))
 
         self.mat1Group.setTitle(QCoreApplication.translate("MainWindow", u"Material 1", None))
         self.matNameLbl.setText(QCoreApplication.translate("MainWindow", u"Material Name:", None))
@@ -315,6 +348,7 @@ class Ui_MainWindow(object):
         self.objPromptLbl.setText(QCoreApplication.translate("MainWindow", u"Objects To \n"
 "Receive Material", None))
         self.addObjBtn.setText(QCoreApplication.translate("MainWindow", u"Add Selected Object", None))
+        self.clearObjBtn.setText(QCoreApplication.translate("MainWindow", u"Clear Objects", None))
         self.submitNewBtn.setText(QCoreApplication.translate("MainWindow", u"Save to New Layer", None))
         self.submitExistBtn.setText(QCoreApplication.translate("MainWindow", u"Save to Active Layer", None))
         self.addMatBtn.setText(QCoreApplication.translate("MainWindow", u"Add Material", None))
