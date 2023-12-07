@@ -12,6 +12,9 @@ import os
 import glob
 from pprint import pprint
 
+# USD import
+from pxr import Usd, UsdShade
+
 DIFFUSE_NAMES = ['base', 'diff']
 METALLIC_NAMES = ['metal']
 ROUGHNESS_NAMES = ['rough', 'specular']
@@ -179,18 +182,67 @@ class MainWindow(QtWidgets.QMainWindow):
         listWidget.clear()
         self.addedItems = []
 
+    def checkFormCompletion(self):
+        '''
+        Checks to see if all necessary form objects have been filled in
+        '''
+        incomplete_forms = []
+        invalid_chars = ['/', ' ']
+
+        if self.ui.matNameTxt.text() == '':
+            incomplete_forms.append('Choose a material name')
+        elif any( char in self.ui.matNameTxt.text() for char in invalid_chars):
+            incomplete_forms.append('Material name cannot include any invalid characters: ({0})'.format(' '.join(invalid_chars)))
+        if self.ui.stageCombo.currentText == u'Select Stage...':
+            incomplete_forms.append('Select a stage to add materials to')
+        
+        alert_str = "Please correct the following issues:\n"
+        for form in incomplete_forms:
+            alert_str += f'\t• {form}'
+        
+        incomplete = len(incomplete_forms) == 0
+
+        if incomplete:
+            self.alert('Incomplete Forms', alert_str)
+            return False
+        else:
+            return True
+
     def getSelectedStage(self):
         try:
             stage_name = str(self.ui.stageCombo.currentText())
             stage_file = cmds.getAttr(stage_name + '.filePath')
+            stage = Usd.Stage.Open(stage_file)
+            return stage
 
         except:
             #Likely means selected object wasn't a stage somehow
-            print("Error Getting Stage Object")
+            return None
             
 
     def saveToNewLayer(self):
-        self.getSelectedStage()
+        stage = self.getSelectedStage()
+        form_completed = self.checkFormCompletion()
+
+        if not form_completed:
+            return
+
+        if stage:
+            try:
+                matname = self.ui.matNameTxt.text()
+                material = UsdShade.Material.Define(stage, f'/mat/{matname}')
+                pbrShader = UsdShade.Shader.Define(stage, f'/mat/{matname}/{matname}Shader')
+                
+
+            except Exception as e:
+                self.alert("Error Building Texture", "The following error was encountered while building the textures: \n" + repr(e))
+                return 
+
+            #material = UsdShade.Material.Define(stage, '/mat/')
+
+        else:
+            self.alert("Stage Error", "There was an error building the stage object from the selected stage.")
+            return 
 
 
 # ------------------------------------ #
