@@ -13,7 +13,9 @@ import glob
 from pprint import pprint
 
 # USD import
-from pxr import Usd, UsdShade
+from pxr import Usd, UsdShade, Sdf
+
+MATERIAL_PRIM = "mtl"
 
 DIFFUSE_NAMES = ['base', 'diff']
 METALLIC_NAMES = ['metal']
@@ -192,15 +194,18 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.ui.matNameTxt.text() == '':
             incomplete_forms.append('Choose a material name')
         elif any( char in self.ui.matNameTxt.text() for char in invalid_chars):
-            incomplete_forms.append('Material name cannot include any invalid characters: ({0})'.format(' '.join(invalid_chars)))
-        if self.ui.stageCombo.currentText == u'Select Stage...':
+            incomplete_forms.append('Material name cannot include any invalid characters: ("{0}")'.format('", "'.join(invalid_chars)))
+        if self.ui.stageCombo.currentText() == u'Select Stage...':
             incomplete_forms.append('Select a stage to add materials to')
         
-        alert_str = "Please correct the following issues:\n"
+        print(self.ui.stageCombo.currentText())
+        print(type(self.ui.stageCombo.currentText()))
+
+        alert_str = "Please correct the following issues:"
         for form in incomplete_forms:
-            alert_str += f'\t• {form}'
+            alert_str += f'\n• {form}'
         
-        incomplete = len(incomplete_forms) == 0
+        incomplete = len(incomplete_forms) != 0
 
         if incomplete:
             self.alert('Incomplete Forms', alert_str)
@@ -213,15 +218,31 @@ class MainWindow(QtWidgets.QMainWindow):
             stage_name = str(self.ui.stageCombo.currentText())
             stage_file = cmds.getAttr(stage_name + '.filePath')
             stage = Usd.Stage.Open(stage_file)
-            return stage
+            return stage, stage_file #future calls to maya cmds require file path too
 
         except:
             #Likely means selected object wasn't a stage somehow
             return None
+        
+    def addMaterialsToLayer(self, layer):
+        try:    
+            # TODO: Check to see if /mat/ or /mtl/ exists already or not
+            #       mtl<NUMBER>? is a scope prim. that exists directly under the root layer
+            #       Might have to process this outside this function, or pass in root layer 
+            #       as well. 
+            # TODO: Check to make sure the name chosen for the texture doesn't already exist
+    
+            matname = self.ui.matNameTxt.text()
+
+            material = UsdShade.Material.Define(layer, f'/{MATERIAL_PRIM}/{matname}') #Maybe put this in another try except blocK?
+            pbrShader = UsdShade.Shader.Define(layer, f'/{MATERIAL_PRIM}/{matname}/{matname}Shader')
+
+        except:
+            self.alert('Error','There was an error adding the material to the layer.')
             
 
     def saveToNewLayer(self):
-        stage = self.getSelectedStage()
+        stage, stage_file = self.getSelectedStage() 
         form_completed = self.checkFormCompletion()
 
         if not form_completed:
@@ -229,16 +250,21 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if stage:
             try:
-                matname = self.ui.matNameTxt.text()
-                material = UsdShade.Material.Define(stage, f'/mat/{matname}')
-                pbrShader = UsdShade.Shader.Define(stage, f'/mat/{matname}/{matname}Shader')
-                
+                root_layer = stage.GetRootLayer()
+
+                # We will add the new layer as an anonymous layer using a combination of Maya
+                # commands and OpenUSD API calls:
+
+                layer_txt = cmds.mayaUsdLayerEditor(stage_file, edit=True, addAnonymous="anonymousTextureLayer")
+                anon_layer = Sdf.Find(layer_txt)
+
+                self.addMaterialsToLayer(anon_layer)
+
+                self.alert("Success!", "Materials successfully added to a new anonymous layer!")
 
             except Exception as e:
                 self.alert("Error Building Texture", "The following error was encountered while building the textures: \n" + repr(e))
                 return 
-
-            #material = UsdShade.Material.Define(stage, '/mat/')
 
         else:
             self.alert("Stage Error", "There was an error building the stage object from the selected stage.")
@@ -246,6 +272,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 # ------------------------------------ #
+
 
 def getMayaWindow():
     pointer = omui.MQtUtil.mainWindow()
