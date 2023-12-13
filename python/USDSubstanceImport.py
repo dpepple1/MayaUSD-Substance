@@ -222,23 +222,34 @@ class MainWindow(QtWidgets.QMainWindow):
 
         except:
             #Likely means selected object wasn't a stage somehow
-            return None
+            return None, None
         
-    def addMaterialsToLayer(self, layer):
+    def addMaterialsToLayer(self, stage, layer):
         try:    
-            # TODO: Check to see if /mat/ or /mtl/ exists already or not
-            #       mtl<NUMBER>? is a scope prim. that exists directly under the root layer
-            #       Might have to process this outside this function, or pass in root layer 
-            #       as well. 
             # TODO: Check to make sure the name chosen for the texture doesn't already exist
     
             matname = self.ui.matNameTxt.text()
+            layer_stage = Usd.Stage.Open(layer)
 
-            material = UsdShade.Material.Define(layer, f'/{MATERIAL_PRIM}/{matname}') #Maybe put this in another try except blocK?
-            pbrShader = UsdShade.Shader.Define(layer, f'/{MATERIAL_PRIM}/{matname}/{matname}Shader')
+            if not stage.GetPrimAtPath(f'/{MATERIAL_PRIM}'):
+                layer_stage.DefinePrim(f'/{MATERIAL_PRIM}', 'Scope') #This solution doesnt work perfectly
+            
+            if stage.GetPrimAtPath(f'/{MATERIAL_PRIM}/{matname}'):
+                self.alert('Duplicate Material Name', 'A material with the chosen name already exists in your scene. Please pick a different one.')
+                return False
 
-        except:
-            self.alert('Error','There was an error adding the material to the layer.')
+
+            material = UsdShade.Material.Define(layer_stage, f'/{MATERIAL_PRIM}/{matname}') #Maybe put this in another try except blocK?
+            pbrShader = UsdShade.Shader.Define(layer_stage, f'/{MATERIAL_PRIM}/{matname}/{matname}Shader')
+
+            #TODO: Connect textures to relevant attributes of material prims
+
+
+            return True
+
+        except Exception as e:
+            self.alert('Error','There was an error adding the material to the layer:\n' + repr(e))
+            return False
             
 
     def saveToNewLayer(self):
@@ -255,12 +266,13 @@ class MainWindow(QtWidgets.QMainWindow):
                 # We will add the new layer as an anonymous layer using a combination of Maya
                 # commands and OpenUSD API calls:
 
-                layer_txt = cmds.mayaUsdLayerEditor(stage_file, edit=True, addAnonymous="anonymousTextureLayer")
+                layer_txt = cmds.mayaUsdLayerEditor(stage_file, edit=True, addAnonymous="anonymousTextureLayer")[0]
                 anon_layer = Sdf.Find(layer_txt)
 
-                self.addMaterialsToLayer(anon_layer)
+                success = self.addMaterialsToLayer(stage, anon_layer)
 
-                self.alert("Success!", "Materials successfully added to a new anonymous layer!")
+                if success:
+                    self.alert("Success!", "Materials successfully added to a new anonymous layer!")
 
             except Exception as e:
                 self.alert("Error Building Texture", "The following error was encountered while building the textures: \n" + repr(e))
