@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>718</width>
+    <height>561</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Maya USD Substance Import</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(55, 55, 55);
+color: rgb(239,239,239);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>673</width>
+         <height>489</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QGroupBox" name="optionsGroup">
+          <property name="title">
+           <string>General Options</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QWidget" name="widget_2" native="true">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(68, 68, 68);</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLabel" name="matTypePrompt">
+                  <property name="text">
+                   <string>Select USD Compatible Material Type:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="matTypeCombo">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(43, 43, 43);</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>USDPreviewSurface</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Arnold Standard Surface</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <widget class="QLabel" name="stageLbl">
+                  <property name="text">
+                   <string>Select Stage to Add Materials To: </string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="stageCombo">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(43, 43, 43);</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Select Stage...</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="mat1Group">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="title">
+           <string>Material 1</string>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QWidget" name="widget" native="true">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(68, 68, 68);</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_4">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_7">
+                    <item>
+                     <widget class="QLabel" name="matNameLbl">
+                      <property name="text">
+                       <string>Material Name:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="matNameTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_6">
+                    <item>
+                     <widget class="QLabel" name="baseColorLbl">
+                      <property name="text">
+                       <string>Base Color:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="baseColorTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="baseColorBtn">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(93, 93, 93);</string>
+                      </property>
+                      <property name="text">
+                       <string>Browse...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_8">
+                    <item>
+                     <widget class="QLabel" name="roughnessLbl">
+                      <property name="text">
+                       <string>Roughness:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="roughnessTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="roughnessBtn">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(93, 93, 93);</string>
+                      </property>
+                      <property name="text">
+                       <string>Browse...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_9">
+                    <item>
+                     <widget class="QLabel" name="metallicLbl">
+                      <property name="text">
+                       <string>Metallic:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="metallicTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="metallicBtn">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(93, 93, 93);</string>
+                      </property>
+                      <property name="text">
+                       <string>Browse...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_10">
+                    <item>
+                     <widget class="QLabel" name="normalLbl">
+                      <property name="text">
+                       <string>Normal:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="normalTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="normalBtn">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(93, 93, 93);</string>
+                      </property>
+                      <property name="text">
+                       <string>Browse...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_11">
+                    <item>
+                     <widget class="QLabel" name="heightLbl">
+                      <property name="text">
+                       <string>Height</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="heightTxt">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(43, 43, 43);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="heightBtn">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(93, 93, 93);</string>
+                      </property>
+                      <property name="text">
+                       <string>Browse...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="browseAllBtn">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(93, 93, 93);</string>
+                    </property>
+                    <property name="text">
+                     <string>Browse All</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_6">
+                  <item>
+                   <widget class="QLabel" name="objPromptLbl">
+                    <property name="text">
+                     <string>Objects To 
+Receive Material</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QListWidget" name="objList">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>200</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(43, 43, 43);
+</string>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::Box</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="addObjBtn">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(93, 93, 93);</string>
+                    </property>
+                    <property name="text">
+                     <string>Add Selected Object</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="clearObjBtn">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(93, 93, 93);</string>
+                    </property>
+                    <property name="text">
+                     <string>Clear Objects</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="submitNewBtn">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(93, 93, 93);</string>
+            </property>
+            <property name="text">
+             <string>Save to New Layer</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>718</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
