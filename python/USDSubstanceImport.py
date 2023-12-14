@@ -224,10 +224,11 @@ class MainWindow(QtWidgets.QMainWindow):
             #Likely means selected object wasn't a stage somehow
             return None, None
         
-    def addMaterialsToLayer(self, stage, layer):
+    def addMaterialsToLayer(self, stage, layer, textures):
         try:    
+            unfoundTextures = []
+
             # TODO: Check to make sure the name chosen for the texture doesn't already exist
-    
             matname = self.ui.matNameTxt.text()
             layer_stage = Usd.Stage.Open(layer)
 
@@ -238,14 +239,63 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.alert('Duplicate Material Name', 'A material with the chosen name already exists in your scene. Please pick a different one.')
                 return False
 
-
+            # Create the Material and Shader
             material = UsdShade.Material.Define(layer_stage, f'/{MATERIAL_PRIM}/{matname}') #Maybe put this in another try except blocK?
+            stInput = material.CreateInput('frame:stPrimvarName', Sdf.ValueTypeNames.Token)
+            stInput.Set('st')
             pbrShader = UsdShade.Shader.Define(layer_stage, f'/{MATERIAL_PRIM}/{matname}/{matname}Shader')
+
+            # Assign the shader the proper Material Type
+            matType = self.ui.matTypeCombo.currentText()
+            if matType == 'USDPreviewSurface':
+
+                # Create shader
+                pbrShader.CreateIdAttr("UsdPreviewSurface")
+                material.CreateSurfaceOutput().ConnectToSource(pbrShader.ConnectableAPI(), "surface")
+                
+                # Create texture coordinate reader
+                stReader = UsdShade.Shader.Define(layer_stage, f'/{MATERIAL_PRIM}/{matname}/stReader')
+                stReader.CreateIdAttr('UsdPrimvarReader_float2')
+                stReader.CreateInput('varname', Sdf.ValueTypeNames.Token).ConnectToSource(stInput)
+
+                for textType in textures:
+                    path = textures[textType]
+                    if not os.path.isfile(path):
+                        unfoundTextures.append(path)
+                        continue
+
+                    textureSampler = UsdShade.Shader.Define(layer_stage, f'/{MATERIAL_PRIM}/{matname}/{textType}Texture')
+                    textureSampler.CreateIdAttr('UsdUVTexture')
+                    textureSampler.CreateInput('file', Sdf.ValueTypeNames.Asset).Set(path)
+                    textureSampler.CreateInput("st", Sdf.ValueTypeNames.Float2).ConnectToSource(stReader.ConnectableAPI(), 'result')
+                    if textType == 'diffuseColor':
+                        textureSampler.CreateOutput('rgb', Sdf.ValueTypeNames.Float3)
+                        pbrShader.CreateInput(textType, Sdf.ValueTypeNames.Color3f).ConnectToSource(textureSampler.ConnectableAPI(), 'rgb')
+                    elif textType =='normal':
+                        textureSampler.CreateOutput('rgb', Sdf.ValueTypeNames.Float3)
+                        pbrShader.CreateInput(textType, Sdf.ValueTypeNames.Normal3f).ConnectToSource(textureSampler.ConnectableAPI(), 'rgb')
+                    else:
+                        # Connect just the red channel. (There is almost certainly a better way to do this...)
+                        textureSampler.CreateOutput('r', Sdf.ValueTypeNames.Float)
+                        pbrShader.CreateInput(textType, Sdf.ValueTypeNames.Float).ConnectToSource(textureSampler.ConnectableAPI(), 'r')
+
+            elif matType =='Arnold Standard Surface':
+                
+                
+                pbrShader.CreateIdAttr("arnold:standard_surface")
+                material.CreateSurfaceOutput().ConnectToSource(pbrShader.ConnectableAPI(), "surface")
+
+
+
+            elif matType == 'Material X':
+                pbrShader.CreateIdAttr('ND_standard_surface_surfaceshader') # This is what shows in LookDevX; not sure where it comes from
+
+
 
             #TODO: Connect textures to relevant attributes of material prims
 
 
-            return True
+            return unfoundTextures
 
         except Exception as e:
             self.alert('Error','There was an error adding the material to the layer:\n' + repr(e))
@@ -266,13 +316,22 @@ class MainWindow(QtWidgets.QMainWindow):
                 # We will add the new layer as an anonymous layer using a combination of Maya
                 # commands and OpenUSD API calls:
 
+                textures = {}
+                textures['diffuseColor'] = self.ui.baseColorTxt.text()
+                textures['roughness'] = self.ui.roughnessTxt.text()
+                textures['metallic'] = self.ui.metallicTxt.text()
+                textures['normal'] = self.ui.normalTxt.text()
+                textures['displacement'] = self.ui.heightTxt.text()
+
                 layer_txt = cmds.mayaUsdLayerEditor(stage_file, edit=True, addAnonymous="anonymousTextureLayer")[0]
                 anon_layer = Sdf.Find(layer_txt)
 
-                success = self.addMaterialsToLayer(stage, anon_layer)
+                unfound_textures = self.addMaterialsToLayer(stage, anon_layer, textures)
 
-                if success:
+                if len(unfound_textures) == 0:
                     self.alert("Success!", "Materials successfully added to a new anonymous layer!")
+                else: 
+                    self.alert("Unfound Textures", "The following texture files were not located:\n " + '\n'.join(unfound_textures))
 
             except Exception as e:
                 self.alert("Error Building Texture", "The following error was encountered while building the textures: \n" + repr(e))
