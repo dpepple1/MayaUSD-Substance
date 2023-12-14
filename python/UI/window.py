@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'window.ui'
+## Form generated from reading UI file 'stripped_down_window.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -49,7 +49,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.matTypePrompt)
 
         self.matTypeCombo = QComboBox(self.widget_2)
-        self.matTypeCombo.addItem("")
         self.matTypeCombo.addItem("")
         self.matTypeCombo.addItem("")
         self.matTypeCombo.setObjectName(u"matTypeCombo")
@@ -288,18 +287,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.submitNewBtn)
 
-        self.submitExistBtn = QPushButton(self.scrollAreaWidgetContents)
-        self.submitExistBtn.setObjectName(u"submitExistBtn")
-        self.submitExistBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
-
-        self.horizontalLayout.addWidget(self.submitExistBtn)
-
-        self.addMatBtn = QPushButton(self.scrollAreaWidgetContents)
-        self.addMatBtn.setObjectName(u"addMatBtn")
-        self.addMatBtn.setStyleSheet(u"background-color: rgb(93, 93, 93);")
-
-        self.horizontalLayout.addWidget(self.addMatBtn)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
 
@@ -326,8 +313,7 @@ class Ui_MainWindow(object):
         self.optionsGroup.setTitle(QCoreApplication.translate("MainWindow", u"General Options", None))
         self.matTypePrompt.setText(QCoreApplication.translate("MainWindow", u"Select USD Compatible Material Type:", None))
         self.matTypeCombo.setItemText(0, QCoreApplication.translate("MainWindow", u"USDPreviewSurface", None))
-        self.matTypeCombo.setItemText(1, QCoreApplication.translate("MainWindow", u"MaterialX", None))
-        self.matTypeCombo.setItemText(2, QCoreApplication.translate("MainWindow", u"Arnold Standard Surface", None))
+        self.matTypeCombo.setItemText(1, QCoreApplication.translate("MainWindow", u"Arnold Standard Surface", None))
 
         self.stageLbl.setText(QCoreApplication.translate("MainWindow", u"Select Stage to Add Materials To: ", None))
         self.stageCombo.setItemText(0, QCoreApplication.translate("MainWindow", u"Select Stage...", None))
@@ -350,7 +336,5 @@ class Ui_MainWindow(object):
         self.addObjBtn.setText(QCoreApplication.translate("MainWindow", u"Add Selected Object", None))
         self.clearObjBtn.setText(QCoreApplication.translate("MainWindow", u"Clear Objects", None))
         self.submitNewBtn.setText(QCoreApplication.translate("MainWindow", u"Save to New Layer", None))
-        self.submitExistBtn.setText(QCoreApplication.translate("MainWindow", u"Save to Active Layer", None))
-        self.addMatBtn.setText(QCoreApplication.translate("MainWindow", u"Add Material", None))
     # retranslateUi
 

@@ -13,7 +13,7 @@ import glob
 from pprint import pprint
 
 # USD import
-from pxr import Usd, UsdShade, Sdf
+from pxr import Usd, UsdShade, Sdf, UsdGeom
 
 MATERIAL_PRIM = "mtl"
 
@@ -23,8 +23,6 @@ ROUGHNESS_NAMES = ['rough', 'specular']
 NORMAL_NAMES = ['normal']
 HEIGHT_NAMES = ['height']
 ALL_NAMES = DIFFUSE_NAMES + METALLIC_NAMES + ROUGHNESS_NAMES + NORMAL_NAMES + HEIGHT_NAMES
-
-print(__file__)
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(1, dir_path)
@@ -197,9 +195,6 @@ class MainWindow(QtWidgets.QMainWindow):
             incomplete_forms.append('Material name cannot include any invalid characters: ("{0}")'.format('", "'.join(invalid_chars)))
         if self.ui.stageCombo.currentText() == u'Select Stage...':
             incomplete_forms.append('Select a stage to add materials to')
-        
-        print(self.ui.stageCombo.currentText())
-        print(type(self.ui.stageCombo.currentText()))
 
         alert_str = "Please correct the following issues:"
         for form in incomplete_forms:
@@ -225,6 +220,9 @@ class MainWindow(QtWidgets.QMainWindow):
             return None, None
         
     def addMaterialsToLayer(self, stage, layer, textures):
+        '''
+        Builds new material networks
+        '''
         try:    
             unfoundTextures = []
 
@@ -330,10 +328,10 @@ class MainWindow(QtWidgets.QMainWindow):
             elif matType == 'Material X':
                 pbrShader.CreateIdAttr('ND_standard_surface_surfaceshader') # This is what shows in LookDevX; not sure where it comes from
 
-
-
-            #TODO: Connect textures to relevant attributes of material prims
-
+            try:
+                self.attachMaterial(layer_stage, stage, material)
+            except Exception as e:
+                self.alert('Cannot Attach Textures', 'There was an error attaching the textures to the geometry selected:\n' + repr(e))
 
             return unfoundTextures
 
@@ -341,6 +339,23 @@ class MainWindow(QtWidgets.QMainWindow):
             self.alert('Error','There was an error adding the material to the layer:\n' + repr(e))
             return False
             
+
+    def attachMaterial(self, stage, baselayer, material):
+        '''
+        Attach newly created materials to selected objects
+        '''
+        widget = self.ui.objList
+        items = [widget.item(x).text() for x in range(widget.count())]
+        print('Items: ', len(items))
+
+        rootLayerFilePath = baselayer.GetRootLayer().resolvedPath
+        stage.GetRootLayer().subLayerPaths.append(rootLayerFilePath)
+
+        # Get this working
+        for item in items:
+            material_override = stage.OverridePrim(item)
+            material_override.ApplyAPI(UsdShade.MaterialBindingAPI)
+            UsdShade.MaterialBindingAPI(material_override).Bind(material)
 
     def saveToNewLayer(self):
         stage, stage_file = self.getSelectedStage() 
@@ -353,15 +368,15 @@ class MainWindow(QtWidgets.QMainWindow):
             try:
                 root_layer = stage.GetRootLayer()
 
-                # We will add the new layer as an anonymous layer using a combination of Maya
-                # commands and OpenUSD API calls:
-
                 textures = {}
                 textures['diffuseColor'] = self.ui.baseColorTxt.text()
                 textures['roughness'] = self.ui.roughnessTxt.text()
                 textures['metallic'] = self.ui.metallicTxt.text()
                 textures['normal'] = self.ui.normalTxt.text()
                 textures['displacement'] = self.ui.heightTxt.text()
+
+                # We will add the new layer as an anonymous layer using a combination of Maya
+                # commands and OpenUSD API calls:
 
                 layer_txt = cmds.mayaUsdLayerEditor(stage_file, edit=True, addAnonymous="anonymousTextureLayer")[0]
                 anon_layer = Sdf.Find(layer_txt)
@@ -383,9 +398,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.alert("Stage Error", "There was an error building the stage object from the selected stage.")
             return 
 
-
 # ------------------------------------ #
-
 
 def getMayaWindow():
     pointer = omui.MQtUtil.mainWindow()
