@@ -281,10 +281,50 @@ class MainWindow(QtWidgets.QMainWindow):
 
             elif matType =='Arnold Standard Surface':
                 
-                
+                # Create shader
                 pbrShader.CreateIdAttr("arnold:standard_surface")
-                material.CreateSurfaceOutput().ConnectToSource(pbrShader.ConnectableAPI(), "surface")
+                #material.CreateSurfaceOutput().ConnectToSource(pbrShader.ConnectableAPI(), "out")
+                material.CreateOutput('arnold:surface', Sdf.ValueTypeNames.Token).ConnectToSource(pbrShader.ConnectableAPI(), 'out') # I think its a token?
 
+                #Skip texture coordinate reader?
+
+                for textType in textures:
+
+                    path = textures[textType]
+                    if not os.path.isfile(path):
+                        unfoundTextures.append(path)
+                        continue
+                    
+                    #Convert texture names to arnold compatible
+                    if textType == 'diffuseColor':
+                        textType = 'base_color'
+                    elif textType == 'roughness':
+                        textType = 'specular_roughness'
+                    elif textType == 'metallic':
+                        textType = 'metalness'
+
+                    textureSampler = UsdShade.Shader.Define(layer_stage, f'/{MATERIAL_PRIM}/{matname}/{textType}Texture')
+                    textureSampler.CreateIdAttr('arnold:image')
+                    textureSampler.CreateInput('filename', Sdf.ValueTypeNames.String).Set(path)
+                    # textureSampler.CreateInput("st", Sdf.ValueTypeNames.Float2).ConnectToSource(stReader.ConnectableAPI(), 'result')
+                    if textType=='displacement':
+                        #TODO: Figure out what to do with displacement textures
+                        continue                    
+                    elif textType == 'base_color':
+                        textureSampler.CreateOutput('out', Sdf.ValueTypeNames.Color4f)
+                        pbrShader.CreateInput(textType, Sdf.ValueTypeNames.Color3f).ConnectToSource(textureSampler.ConnectableAPI(), 'out')
+                    elif textType == 'normal': # normal input is vector3f not color3f
+                        textureSampler.CreateOutput('out', Sdf.ValueTypeNames.Color4f)
+                        pbrShader.CreateInput(textType, Sdf.ValueTypeNames.Vector3f).ConnectToSource(textureSampler.ConnectableAPI(), 'out')
+                    else:
+                        # Need to create a node to convert color to black and white:
+                        converter = UsdShade.Shader.Define(layer_stage, f'/{MATERIAL_PRIM}/{matname}/{textType}Converter')
+                        converter.CreateIdAttr('arnold:rgba_to_float')
+                        converter.CreateInput('input', Sdf.ValueTypeNames.Color4f).ConnectToSource(textureSampler.ConnectableAPI(), 'out')
+                        converter.CreateOutput('out', Sdf.ValueTypeNames.Float)
+
+                        textureSampler.CreateOutput('out', Sdf.ValueTypeNames.Color4f)
+                        pbrShader.CreateInput(textType, Sdf.ValueTypeNames.Float).ConnectToSource(converter.ConnectableAPI(), 'out')
 
 
             elif matType == 'Material X':
@@ -328,7 +368,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 unfound_textures = self.addMaterialsToLayer(stage, anon_layer, textures)
 
-                if len(unfound_textures) == 0:
+                if unfound_textures == False:
+                    self.alert('Error', 'There were errors adding the material')
+                elif len(unfound_textures) == 0:
                     self.alert("Success!", "Materials successfully added to a new anonymous layer!")
                 else: 
                     self.alert("Unfound Textures", "The following texture files were not located:\n " + '\n'.join(unfound_textures))
