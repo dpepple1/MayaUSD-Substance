@@ -258,6 +258,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 for textType in textures:
                     path = textures[textType]
+                    if path == '':
+                        continue
                     if not os.path.isfile(path):
                         unfoundTextures.append(path)
                         continue
@@ -289,6 +291,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 for textType in textures:
 
                     path = textures[textType]
+                    if path == '':
+                        continue
                     if not os.path.isfile(path):
                         unfoundTextures.append(path)
                         continue
